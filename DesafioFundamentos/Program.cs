@@ -6,12 +6,33 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 decimal precoInicial = 0;
 decimal precoPorHora = 0;
 
-Console.WriteLine("Seja bem vindo ao sistema de estacionamento!\n" +
-                  "Digite o preço inicial:");
-precoInicial = Convert.ToDecimal(Console.ReadLine());
+//BUG: Caso o usuario digitasse um caracter não númerico, o programa dava um erro e fechava.
+//DONE: Para corrigir este bug, adicionei uma lógica que irá válidar o caracter, fazendo o fluxo seguir mesmo com caracter inválido.
+//BUG: Após isso, ocorreu outro bug. Programa seguia fluxo mas fechava de qualquer maneira caso caracter fosse inválido.
+//DONE: Para Corrigir este bug, adicionei um laço de repetição que irá seguir somente quando ambos forem válidos.
+Console.WriteLine("Seja bem-vindo ao sistema de estacionamento!");
+while (true)
+{
+    //Verifica se precoInicial é válido
+    Console.WriteLine("Digite o preço inicial:");
+    if (!decimal.TryParse(Console.ReadLine(), out precoInicial))
+    {
+        Console.WriteLine("Valor inválido para o preço inicial, Digite Números Válidos \nTente novamente.");
+        continue; // Volta para o Inicio do loop caso seja inválido.
+    }
 
-Console.WriteLine("Agora digite o preço por hora:");
-precoPorHora = Convert.ToDecimal(Console.ReadLine());
+    //Verifica se precoPorHora é válido
+    Console.WriteLine("Agora digite o preço por hora:");
+    if (!decimal.TryParse(Console.ReadLine(), out precoPorHora))
+    {
+        Console.WriteLine("Valor inválido para o preço por hora, Digite Números Válidos \nTente novamente.");
+        continue; // Volta para o início do loop caso seja inválido.
+    }
+
+    // Se ambos os valores forem válidos, sairá do loop e seguirá o fluxo;
+    break;
+}
+
 
 // Instancia a classe Estacionamento, já com os valores obtidos anteriormente
 Estacionamento es = new Estacionamento(precoInicial, precoPorHora);
